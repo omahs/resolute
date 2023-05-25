@@ -33,10 +33,12 @@ export default function PageMultisigInfo() {
   const members = multisigAccountDetails?.pubkeys || [];
   const multisigBal = useSelector((state) => state.multisig.balance);
   const multisigDel = useSelector((state) => state.staking.delegations);
-  const currency = useSelector(
-    (state) => state.wallet.chainInfo?.config?.currencies[0]
-  );
+  const selectedNetwork = useSelector((state) => state.common.selectedNetwork.chainName).toLowerCase();
+  const nameToChainIDs = useSelector((state) => state.wallet.nameToChainIDs);
+  const networks = useSelector((state) => state.wallet.networks);
   const [totalStake, setTotalStaked] = useState(0);
+  const currency =
+  networks[nameToChainIDs[selectedNetwork]]?.network.config.currencies[0];
 
   useEffect(() => {
     let delegations = multisigDel?.delegations || [];
@@ -51,7 +53,8 @@ export default function PageMultisigInfo() {
   }, [multisigDel]);
 
   const wallet = useSelector((state) => state.wallet);
-  const { chainInfo, connected } = wallet;
+  const { connected } = wallet;
+  const chainInfo = wallet.networks[nameToChainIDs[selectedNetwork]]?.network;
 
   useEffect(() => {
     dispatch(multisigByAddress(multisigAddress));
@@ -62,7 +65,7 @@ export default function PageMultisigInfo() {
     if (connected) {
       dispatch(
         getMultisigBalance({
-          baseURL: chainInfo.config.rest,
+          baseURL: chainInfo?.config.rest,
           address: multisigAddress,
           denom: chainInfo?.config?.currencies[0].coinMinimalDenom,
         })

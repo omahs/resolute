@@ -28,19 +28,24 @@ export default function PageMultisig() {
     (state) => state.multisig.createMultisigAccountRes
   );
 
+  const selectedNetwork = useSelector((state) => state.common.selectedNetwork.chainName).toLowerCase();
+  const nameToChainIDs = useSelector((state) => state.wallet.nameToChainIDs);
   const wallet = useSelector((state) => state.wallet);
-  const { chainInfo, connected } = wallet;
+  // console.log(wallet,selectedNetwork, [nameToChainIDs[selectedNetwork.toLowerCase()]])
+  const { connected } = wallet;
+  const chainInfo = wallet.networks[nameToChainIDs[selectedNetwork]]?.network;
+  console.log("chaininfo", chainInfo)
 
   const multisigAccounts = useSelector(
     (state) => state.multisig.multisigAccounts
   );
   const accounts = multisigAccounts.accounts;
   const pendingTxns = multisigAccounts.txnCounts;
-  const walletAddress = useSelector((state) => state.wallet.address);
+  const walletAddress = wallet.networks[nameToChainIDs[selectedNetwork]]?.walletInfo?.bech32Address;
 
-  const { config } = chainInfo;
-  const { chainId } = config;
-  const networkInfo = getNetworkByChainId(chainId);
+  const config = chainInfo?.config;
+  const chainId = config?.chainId;
+  const networkInfo = chainInfo;
   const addressPrefix = networkInfo?.config?.bech32Config?.bech32PrefixAccAddr;
 
   const dispatch = useDispatch();
@@ -53,6 +58,7 @@ export default function PageMultisig() {
 
   useEffect(() => {
     if (connected) {
+      console.log("called.....", walletAddress)
       dispatch(getMultisigAccounts(walletAddress));
     }
   }, [chainInfo]);

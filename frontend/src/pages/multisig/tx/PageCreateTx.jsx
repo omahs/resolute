@@ -219,8 +219,11 @@ export default function PageCreateTx() {
 
   const [txType, setTxType] = useState("");
 
+  const selectedNetwork = useSelector((state) => state.common.selectedNetwork.chainName).toLowerCase();
+  const nameToChainIDs = useSelector((state) => state.wallet.nameToChainIDs);
   const wallet = useSelector((state) => state.wallet);
-  const { chainInfo, connected } = wallet;
+  const { connected } = wallet;
+  const chainInfo = wallet.networks[nameToChainIDs[selectedNetwork]]?.network;
 
   const validators = useSelector((state) => state.staking.validators);
 

@@ -22,13 +22,16 @@ const PER_PAGE = 5;
 const SEND_TEMPLATE = "https://resolute.witval.com/_static/send.csv";
 
 export default function MultiTx() {
-  const wallet = useSelector((state) => state.wallet);
-  const { chainInfo, address } = wallet;
+  const selectedNetwork = useSelector((state) => state.common.selectedNetwork.chainName);
+  const networks = useSelector((state) => state.wallet.networks);
+  const nameToChainIDs = useSelector((state) => state.wallet.nameToChainIDs);
+  const chainInfo = networks[nameToChainIDs[selectedNetwork]]?.network;
+  const address =
+  networks[nameToChainIDs[selectedNetwork]]?.walletInfo.bech32Address;
   const feegrant = useSelector((state) => state.common.feegrant);
   const submitTxStatus = useSelector((state) => state.bank.tx.status);
-  const currency = useSelector(
-    (state) => state.wallet.chainInfo.config.currencies[0]
-  );
+  const currency =
+    networks[nameToChainIDs[selectedNetwork]]?.network.config.currencies[0];
 
   const [slicedMsgs, setSlicedMsgs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
