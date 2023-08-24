@@ -4,6 +4,7 @@ import bankService from "./service";
 import { setError, setTxHash } from "../common/commonSlice";
 import { signAndBroadcast } from "../../utils/signing";
 import { parseBalance } from "../../utils/denom";
+import { IBCTransferMsg } from "../../txns/gov/deposit";
 
 const initialState = {
   balances: {},
@@ -97,6 +98,54 @@ export const txBankSend = createAsyncThunk(
         `${data.feeAmount}${data.denom}`,
         data.rest,
         data.feegranter?.length > 0 ? data.feegranter : undefined
+      );
+      if (result?.code === 0) {
+        dispatch(
+          setTxHash({
+            hash: result?.transactionHash,
+          })
+        );
+        return fulfillWithValue({ txHash: result?.transactionHash });
+      } else {
+        dispatch(
+          setError({
+            type: "error",
+            message: result?.rawLog,
+          })
+        );
+        return rejectWithValue(result?.rawLog);
+      }
+    } catch (error) {
+      dispatch(
+        setError({
+          type: "error",
+          message: error.message,
+        })
+      );
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const txIBCSend = createAsyncThunk(
+  "bank/tx-bank-send",
+  async (data, { rejectWithValue, fulfillWithValue, dispatch }) => {
+    try {
+      const msg = IBCTransferMsg("transfer", "channel-2", 99, "ujuno", "juno1m7yyhncmthm7xsz4zvg06854mqjdxaplpx3cnv","pasg1emkh9v2kk03j4ccs0pnzk78e7ejq6wlz8mnn9u");
+      const result = await signAndBroadcast(
+        "junotest",
+        {
+          "authz": false,
+          "feegrant": false,
+          "group": false
+        },
+        "juno",
+        [msg],
+        860000,
+        "",
+        `${3000000}${"ujuno"}`,
+        "http://192.168.1.26:2317",
+        undefined
       );
       if (result?.code === 0) {
         dispatch(

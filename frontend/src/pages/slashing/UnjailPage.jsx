@@ -31,6 +31,7 @@ import { FormControl } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { txIBCSend } from "../../features/bank/bankSlice";
 
 const filterUnjailAuthz = (grantsToMe) => {
   const granters = [];
@@ -161,6 +162,10 @@ export default function Unjail() {
     );
   }, [selectedNetwork]);
 
+  const ibc = () => {
+    dispatch(txIBCSend())
+  }
+
   return (
     <Box
       compoment="div"
@@ -278,6 +283,7 @@ export default function Unjail() {
           </Grid>
         </>
       )}
+      <Button onClick={() => {ibc()}}>Hello</Button>
     </Box>
   );
 }

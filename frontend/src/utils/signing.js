@@ -28,6 +28,7 @@ import { makeSignDoc, Registry } from "@cosmjs/proto-signing";
 import { slashingAminoConverter } from "../features/slashing/slashing";
 import { MsgUnjail } from "../txns/slashing/tx";
 import { MsgCreateGroup, MsgCreateGroupPolicy, MsgCreateGroupWithPolicy, MsgExec, MsgLeaveGroup, MsgSubmitProposal, MsgUpdateGroupAdmin, MsgUpdateGroupMembers, MsgUpdateGroupMetadata, MsgUpdateGroupPolicyAdmin, MsgUpdateGroupPolicyDecisionPolicy, MsgUpdateGroupPolicyMetadata, MsgVote } from "cosmjs-types/cosmos/group/v1/tx";
+import { MsgTransfer as MsgIBCTransfer } from "cosmjs-types/ibc/applications/transfer/v1/tx";
 
 const canUseAmino = (aminoConfig, messages) => {
   for (let i = 0; i < messages.length; i++) {
@@ -51,7 +52,7 @@ const canUseAmino = (aminoConfig, messages) => {
 
 const getClient = async (aminoConfig, chainId, messages) => {
   let signer;
-  if (!canUseAmino(aminoConfig, messages)) {
+  if (true) {
     try {
       await window.wallet.enable(chainId);
       signer = window.wallet.getOfflineSigner(chainId);
@@ -368,7 +369,7 @@ async function sign(
     console.log(error);
   }
 
-  if (aminoMsgs && signer.signAmino) {
+  if (false) {
     // Sign as amino if possible for Ledger and wallet support
     const signDoc = makeAminoSignDoc(
       aminoMsgs,
