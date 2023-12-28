@@ -156,3 +156,7 @@
   @apply rounded-2xl px-10 py-[10px] font-medium text-[16px];
   background: linear-gradient(180deg, #4aa29c 0%, #8b3da7 100%);
 }
+
+.empty-screen-text {
+  @apply text-[16px] my-6 leading-normal italic font-extralight text-center opacity-50;
+}

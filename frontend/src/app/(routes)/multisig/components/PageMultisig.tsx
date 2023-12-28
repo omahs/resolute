@@ -5,6 +5,7 @@ import useGetChainInfo from '@/custom-hooks/useGetChainInfo';
 import { useAppDispatch, useAppSelector } from '@/custom-hooks/StateHooks';
 import { RootState } from '@/store/store';
 import {
+  getMultisigAccounts,
   resetDeleteMultisigRes,
   resetVerifyAccountRes,
   verifyAccount,
@@ -13,6 +14,7 @@ import { setAuthToken } from '@/utils/localStorage';
 import { resetError, setError } from '@/store/features/common/commonSlice';
 import VerifyAccount from './VerifyAccount';
 import { isVerified } from '@/utils/util';
+import TopNav from '@/components/TopNav';
 
 const PageMultisig = ({ chainName }: { chainName: string }) => {
   const dispatch = useAppDispatch();
@@ -22,6 +24,9 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
   );
   const verifyAccountRes = useAppSelector(
     (state) => state.multisig.verifyAccountRes
+  );
+  const multisigAccounts = useAppSelector(
+    (state: RootState) => state.multisig.multisigAccounts
   );
   const chainID = nameToChainIDs[chainName];
 
@@ -74,6 +79,10 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
     dispatch(resetDeleteMultisigRes());
   }, []);
 
+  useEffect(() => {
+    if (address) dispatch(getMultisigAccounts(address));
+  }, []);
+
   return (
     <div className="flex gap-10">
       {verified ? (
@@ -83,14 +92,21 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
           chainID={chainID}
         />
       ) : (
-        <VerifyAccount chainID={chainID} walletAddress={address} />
+        <div className="w-full relative">
+          <div className="w-fit absolute top-6 right-6">
+            <TopNav />
+          </div>
+          <VerifyAccount chainID={chainID} walletAddress={address} />
+        </div>
       )}
-      <MultisigSidebar
-        chainID={chainID}
-        walletAddress={address}
-        accountSpecific={false}
-        verified={verified}
-      />
+      {multisigAccounts.accounts.length ? (
+        <MultisigSidebar
+          chainID={chainID}
+          walletAddress={address}
+          accountSpecific={false}
+          verified={verified}
+        />
+      ) : null}
     </div>
   );
 };

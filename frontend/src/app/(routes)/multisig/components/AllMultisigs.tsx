@@ -66,7 +66,7 @@ const AllMultisigs: React.FC<AllMultisigsProps> = (props) => {
           <h2 className="text-[20px] leading-normal font-normal">Multisig</h2>
           <div className="flex justify-between items-center">
             <h3>All Accounts</h3>
-            {status !== TxStatus.PENDING && !accounts?.length ? null : (
+            {!accounts?.length ? null : (
               <div>
                 <button
                   className="create-multisig-btn"
@@ -93,7 +93,7 @@ const AllMultisigs: React.FC<AllMultisigsProps> = (props) => {
                   height={235}
                   alt={'No Transactions'}
                 />
-                <div className="text-[16px] my-6 leading-normal italic font-extralight text-center">
+                <div className="empty-screen-text">
                   This looks empty ! go ahead and create MultiSig account Now !
                 </div>
                 <div>
@@ -180,7 +180,7 @@ const MultisigAccountCard = ({
             />
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="flex gap-10">
           <div className="space-y-2">
             <div className="opacity-50">Actions Required</div>
             <div className="text-[16px] leading-[20px] font-bold">

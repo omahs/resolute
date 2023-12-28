@@ -96,7 +96,7 @@ const TransactionsList: React.FC<TransactionsListProps> = (props) => {
             height={130}
             alt={'No Transactions'}
           />
-          <div className="text-[16px] leading-normal italic font-extralight text-center">
+          <div className="text-[16px] leading-normal italic font-extralight text-center opacity-50">
             No Transactions
           </div>
         </div>
