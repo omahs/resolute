@@ -63,7 +63,6 @@ interface DialogCreateTxnProps {
   onClose: () => void;
   chainID: string;
   address: string;
-  walletAddress: string;
 }
 
 const PER_PAGE = 6;
@@ -199,7 +198,7 @@ const FileUpload = (props: FileUploadProps) => {
 };
 
 const DialogCreateTxn: React.FC<DialogCreateTxnProps> = (props) => {
-  const { open, onClose, chainID, address, walletAddress } = props;
+  const { open, onClose, chainID, address } = props;
   const [isFileUpload, setIsFileUpload] = useState<boolean>(false);
   const [txType, setTxType] = useState('Send');
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -410,7 +409,7 @@ const DialogCreateTxn: React.FC<DialogCreateTxnProps> = (props) => {
       data.fees.toString(),
       data.gas
     );
-    const authToken = getAuthToken(chainID);
+    const authToken = getAuthToken();
     dispatch(
       createTxn({
         data: {
@@ -422,7 +421,7 @@ const DialogCreateTxn: React.FC<DialogCreateTxnProps> = (props) => {
           gas: data.gas,
         },
         queryParams: {
-          address: walletAddress,
+          address: authToken?.address || '',
           signature: authToken?.signature || '',
         },
       })

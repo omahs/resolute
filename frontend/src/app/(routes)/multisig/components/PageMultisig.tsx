@@ -8,7 +8,6 @@ import {
   getMultisigAccounts,
   resetDeleteMultisigRes,
   resetVerifyAccountRes,
-  verifyAccount,
 } from '@/store/features/multisig/multisigSlice';
 import { setAuthToken } from '@/utils/localStorage';
 import { resetError, setError } from '@/store/features/common/commonSlice';
@@ -31,27 +30,12 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
   const chainID = nameToChainIDs[chainName];
 
   const { getChainInfo } = useGetChainInfo();
-  const { address } = getChainInfo(chainID);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (!isVerified({ chainID, address }) && chainID?.length) {
-        dispatch(
-          verifyAccount({
-            chainID: chainID,
-            address: address,
-          })
-        );
-      }
-    }, 1200);
-    return () => clearTimeout(timeoutId);
-  }, [address, chainID]);
+  const { address, cosmosAddress } = getChainInfo(chainID);
 
   useEffect(() => {
     if (verifyAccountRes.status === 'idle') {
       setAuthToken({
-        chainID: chainID,
-        address: address,
+        address: cosmosAddress,
         signature: verifyAccountRes.token,
       });
       setVerified(true);
@@ -67,7 +51,7 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
   }, [verifyAccountRes]);
 
   useEffect(() => {
-    if (isVerified({ chainID, address })) {
+    if (isVerified({ address: cosmosAddress })) {
       setVerified(true);
     } else {
       setVerified(false);
@@ -96,10 +80,10 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
           <div className="w-fit absolute top-6 right-6">
             <TopNav />
           </div>
-          <VerifyAccount chainID={chainID} walletAddress={address} />
+          <VerifyAccount chainID={chainID} />
         </div>
       )}
-      {multisigAccounts.accounts.length ? (
+      {verified && multisigAccounts.accounts.length ? (
         <MultisigSidebar
           chainID={chainID}
           walletAddress={address}

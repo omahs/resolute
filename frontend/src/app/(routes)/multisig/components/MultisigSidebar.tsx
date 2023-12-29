@@ -168,7 +168,7 @@ const MultisigSidebar: React.FC<MultisigSidebarProps> = (props) => {
                       <div className="custom-radio-button-checked"></div>
                     ) : null}
                   </div>
-                  <div className='text-[14px]'>Active Transactions</div>
+                  <div className="text-[14px]">Active Transactions</div>
                 </div>
                 <div
                   className="custom-radio-button-label"
@@ -179,7 +179,7 @@ const MultisigSidebar: React.FC<MultisigSidebarProps> = (props) => {
                       <div className="custom-radio-button-checked"></div>
                     ) : null}
                   </div>
-                  <div className='text-[14px]'>Completed Transactions</div>
+                  <div className="text-[14px]">Completed Transactions</div>
                 </div>
               </div>
             </div>
@@ -198,7 +198,6 @@ const MultisigSidebar: React.FC<MultisigSidebarProps> = (props) => {
                 onClose={handleCreateDialogClose}
                 chainID={chainID}
                 address={address || ''}
-                walletAddress={walletAddress}
               />
             </>
           ) : (

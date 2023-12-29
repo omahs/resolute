@@ -31,7 +31,7 @@ const BroadCastTxn: React.FC<BroadCastTxnProps> = (props) => {
   const dispatch = useAppDispatch();
   const [load, setLoad] = useState(false);
   const { getChainInfo } = useGetChainInfo();
-  const { rpc, address: walletAddress } = getChainInfo(chainID);
+  const { rpc } = getChainInfo(chainID);
 
   const updateTxnRes = useAppSelector(
     (state: RootState) => state.multisig.updateTxnRes
@@ -56,17 +56,15 @@ const BroadCastTxn: React.FC<BroadCastTxnProps> = (props) => {
 
   const broadcastTxn = async () => {
     setLoad(true);
-    const authToken = getAuthToken(chainID);
+    const authToken = getAuthToken();
     const queryParams = {
-      address: walletAddress,
+      address: authToken?.address || '',
       signature: authToken?.signature || '',
     };
     try {
       const client = await SigningStargateClient.connect(rpc);
 
-      const multisigAcc = await client.getAccount(
-        multisigAddress
-      );
+      const multisigAcc = await client.getAccount(multisigAddress);
       if (!multisigAcc) {
         dispatch(
           setError({
@@ -187,7 +185,9 @@ const BroadCastTxn: React.FC<BroadCastTxnProps> = (props) => {
   };
   return (
     <button
-      className={isMember ? 'sign-broadcast-btn' : 'sign-broadcast-btn btn-disabled'}
+      className={
+        isMember ? 'sign-broadcast-btn' : 'sign-broadcast-btn btn-disabled'
+      }
       onClick={() => {
         broadcastTxn();
       }}

@@ -6,7 +6,6 @@ import {
   getMultisigAccounts,
   getMultisigBalance,
   multisigByAddress,
-  verifyAccount,
 } from '@/store/features/multisig/multisigSlice';
 import { setAuthToken } from '@/utils/localStorage';
 import {
@@ -41,7 +40,11 @@ const PageMultisigInfo: React.FC<PageMultisigInfoProps> = (props) => {
   const chainID = nameToChainIDs[chainName];
 
   const { getChainInfo, getDenomInfo } = useGetChainInfo();
-  const { address: walletAddress, baseURL } = getChainInfo(chainID);
+  const {
+    address: walletAddress,
+    baseURL,
+    cosmosAddress,
+  } = getChainInfo(chainID);
   const {
     minimalDenom: coinMinimalDenom,
     decimals: coinDecimals,
@@ -49,24 +52,9 @@ const PageMultisigInfo: React.FC<PageMultisigInfoProps> = (props) => {
   } = getDenomInfo(chainID);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (!isVerified({ chainID, address: walletAddress }) && chainID?.length) {
-        dispatch(
-          verifyAccount({
-            chainID: chainID,
-            address: walletAddress,
-          })
-        );
-      }
-    }, 1200);
-    return () => clearTimeout(timeoutId);
-  }, [walletAddress, chainID]);
-
-  useEffect(() => {
     if (verifyAccountRes.status === 'idle') {
       setAuthToken({
-        chainID: chainID,
-        address: walletAddress,
+        address: cosmosAddress,
         signature: verifyAccountRes.token,
       });
       setVerified(true);
@@ -81,7 +69,7 @@ const PageMultisigInfo: React.FC<PageMultisigInfoProps> = (props) => {
   }, [verifyAccountRes]);
 
   useEffect(() => {
-    if (isVerified({ chainID, address: walletAddress })) {
+    if (isVerified({ address: cosmosAddress })) {
       setVerified(true);
     } else {
       setVerified(false);
@@ -89,7 +77,7 @@ const PageMultisigInfo: React.FC<PageMultisigInfoProps> = (props) => {
   }, [address, chainID]);
 
   useEffect(() => {
-    if (chainID && isVerified({ chainID, address: walletAddress })) {
+    if (chainID && isVerified({ address: cosmosAddress })) {
       dispatch(
         getMultisigBalance({ baseURL, address, denom: coinMinimalDenom })
       );
@@ -120,7 +108,7 @@ const PageMultisigInfo: React.FC<PageMultisigInfoProps> = (props) => {
           coinDenom={coinDenom}
         />
       ) : (
-        <VerifyAccount chainID={chainID} walletAddress={walletAddress} />
+        <VerifyAccount chainID={chainID} />
       )}
       <MultisigSidebar
         chainID={chainID}
