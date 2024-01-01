@@ -6,7 +6,6 @@ import {
   getMultisigAccounts,
   getMultisigBalance,
   multisigByAddress,
-  verifyAccount,
 } from '@/store/features/multisig/multisigSlice';
 import { setAuthToken } from '@/utils/localStorage';
 import {
@@ -21,7 +20,7 @@ import {
 import AccountInfo from './AccountInfo';
 import MultisigSidebar from './MultisigSidebar';
 import VerifyAccount from './VerifyAccount';
-import { isVerified } from '@/utils/util';
+import { isMultisigMember, isVerified } from '@/utils/util';
 
 interface PageMultisigInfoProps {
   chainName: string;
@@ -47,20 +46,6 @@ const PageMultisigInfo: React.FC<PageMultisigInfoProps> = (props) => {
     decimals: coinDecimals,
     displayDenom: coinDenom,
   } = getDenomInfo(chainID);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (!isVerified({ chainID, address: walletAddress }) && chainID?.length) {
-        dispatch(
-          verifyAccount({
-            chainID: chainID,
-            address: walletAddress,
-          })
-        );
-      }
-    }, 1200);
-    return () => clearTimeout(timeoutId);
-  }, [walletAddress, chainID]);
 
   useEffect(() => {
     if (verifyAccountRes.status === 'idle') {
@@ -118,6 +103,7 @@ const PageMultisigInfo: React.FC<PageMultisigInfoProps> = (props) => {
           coinMinimalDenom={coinMinimalDenom}
           coinDecimals={coinDecimals}
           coinDenom={coinDenom}
+          walletAddress={walletAddress}
         />
       ) : (
         <VerifyAccount chainID={chainID} walletAddress={walletAddress} />

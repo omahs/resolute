@@ -49,7 +49,7 @@
 }
 
 .multisig-account-address {
-  @apply flex gap-2 px-2 text-[14px] leading-[20px];
+  @apply w-fit leading-[20px];
 }
 
 .custom-radio-button-label {

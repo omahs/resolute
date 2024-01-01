@@ -185,9 +185,7 @@ const DialogSelectNetwork = ({
               />
             </div>
           </div>
-          <div className="px-10 text-center truncate">
-            {message?.length ? message : null}
-          </div>
+          <div className="message">{message?.length ? message : null}</div>
           <div className="py-6 px-10">
             <div className="mb-6 flex justify-between">
               <h2 className="text-[20px] font-bold leading-normal">
