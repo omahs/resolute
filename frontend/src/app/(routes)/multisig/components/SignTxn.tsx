@@ -110,7 +110,7 @@ const SignTxn: React.FC<SignTxnProps> = (props) => {
       onClick={() => {
         signTheTx();
       }}
-      disabled={!isMember}
+      disabled={load || !isMember}
     >
       {load ? <CircularProgress size={20} sx={{ color: 'white' }} /> : 'Sign'}
     </button>

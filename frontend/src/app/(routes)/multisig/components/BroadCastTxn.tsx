@@ -192,6 +192,7 @@ const BroadCastTxn: React.FC<BroadCastTxnProps> = (props) => {
       onClick={() => {
         broadcastTxn();
       }}
+      disabled={load || !isMember}
     >
       {load ? (
         <CircularProgress size={20} sx={{ color: 'white' }} />

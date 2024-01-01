@@ -21,6 +21,7 @@ import AccountInfo from './AccountInfo';
 import MultisigSidebar from './MultisigSidebar';
 import VerifyAccount from './VerifyAccount';
 import { isMultisigMember, isVerified } from '@/utils/util';
+import TopNav from '@/components/TopNav';
 
 interface PageMultisigInfoProps {
   chainName: string;
@@ -96,25 +97,32 @@ const PageMultisigInfo: React.FC<PageMultisigInfoProps> = (props) => {
   return (
     <div className="flex gap-10 justify-between">
       {verified ? (
-        <AccountInfo
-          chainID={chainID}
-          chainName={chainName}
-          address={address}
-          coinMinimalDenom={coinMinimalDenom}
-          coinDecimals={coinDecimals}
-          coinDenom={coinDenom}
-          walletAddress={walletAddress}
-        />
+        <>
+          <AccountInfo
+            chainID={chainID}
+            chainName={chainName}
+            address={address}
+            coinMinimalDenom={coinMinimalDenom}
+            coinDecimals={coinDecimals}
+            coinDenom={coinDenom}
+            walletAddress={walletAddress}
+          />
+          <MultisigSidebar
+            chainID={chainID}
+            accountSpecific={true}
+            address={address}
+            walletAddress={walletAddress}
+            verified={verified}
+          />
+        </>
       ) : (
-        <VerifyAccount chainID={chainID} walletAddress={walletAddress} />
+        <div className="w-full relative">
+          <div className="w-fit absolute top-6 right-6">
+            <TopNav />
+          </div>
+          <VerifyAccount chainID={chainID} walletAddress={walletAddress} />
+        </div>
       )}
-      <MultisigSidebar
-        chainID={chainID}
-        accountSpecific={true}
-        address={address}
-        walletAddress={walletAddress}
-        verified={verified}
-      />
     </div>
   );
 };
