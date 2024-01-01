@@ -20,7 +20,7 @@ import {
 import AccountInfo from './AccountInfo';
 import MultisigSidebar from './MultisigSidebar';
 import VerifyAccount from './VerifyAccount';
-import { isMultisigMember, isVerified } from '@/utils/util';
+import { isVerified } from '@/utils/util';
 import TopNav from '@/components/TopNav';
 
 interface PageMultisigInfoProps {

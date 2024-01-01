@@ -8,7 +8,6 @@ import {
   getMultisigAccounts,
   resetDeleteMultisigRes,
   resetVerifyAccountRes,
-  verifyAccount,
 } from '@/store/features/multisig/multisigSlice';
 import { setAuthToken } from '@/utils/localStorage';
 import { resetError, setError } from '@/store/features/common/commonSlice';

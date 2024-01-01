@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/custom-hooks/StateHooks';
+import { useAppSelector } from '@/custom-hooks/StateHooks';
 import useGetChainInfo from '@/custom-hooks/useGetChainInfo';
 import { RootState } from '@/store/store';
 import { Txn, Txns } from '@/types/multisig';
@@ -20,7 +20,6 @@ interface TransactionsListProps {
 
 const TransactionsList: React.FC<TransactionsListProps> = (props) => {
   const { chainID, isMember, txnsState, isHistory } = props;
-  const dispatch = useAppDispatch();
   const multisigAccount = useAppSelector(
     (state: RootState) => state.multisig.multisigAccount
   );
