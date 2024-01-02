@@ -1,13 +1,16 @@
 import useGetChainInfo from '@/custom-hooks/useGetChainInfo';
 import { MultisigAddressPubkey, Txn, Txns } from '@/types/multisig';
 import { EMPTY_TXN } from '@/utils/constants';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DialogViewRaw from './DialogViewRaw';
 import DialogTxnFailed from './DialogTxnFailed';
 import DialogViewTxnMessages from './DialogViewTxnMessages';
 import TransactionCard from './TransactionCard';
 import { isMultisigMember } from '@/utils/util';
 import Image from 'next/image';
+import { TxStatus } from '@/types/enums';
+import { useAppSelector } from '@/custom-hooks/StateHooks';
+import { RootState } from '@/store/store';
 
 interface AllTransactionsListProps {
   chainID: string;
@@ -63,6 +66,12 @@ const AllTransactionsList: React.FC<AllTransactionsListProps> = (props) => {
   const { explorerTxHashEndpoint, address: walletAddress } =
     getChainInfo(chainID);
   const { decimals, displayDenom, minimalDenom } = getDenomInfo(chainID);
+  const createSignRes = useAppSelector(
+    (state: RootState) => state.multisig.signTxRes
+  );
+  const updateTxnState = useAppSelector(
+    (state: RootState) => state.multisig.updateTxnRes
+  );
   const currency = useMemo(
     () => ({
       coinMinimalDenom: minimalDenom,
@@ -71,6 +80,18 @@ const AllTransactionsList: React.FC<AllTransactionsListProps> = (props) => {
     }),
     [minimalDenom, decimals, displayDenom]
   );
+
+  useEffect(() => {
+    if (createSignRes.status !== TxStatus.PENDING) {
+      setMsgDialogOpen(false);
+    }
+  }, [createSignRes.status]);
+
+  useEffect(() => {
+    if (updateTxnState.status === TxStatus.IDLE) {
+      setMsgDialogOpen(false);
+    }
+  }, [updateTxnState.status]);
 
   return (
     <div className="pb-6 space-y-6 text-[14px] flex flex-col justify-between">

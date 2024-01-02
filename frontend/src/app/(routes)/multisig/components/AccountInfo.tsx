@@ -92,8 +92,8 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
           coinMinimalDenom,
           coinDecimals,
         })}
-        chainID={chainID}
         isMember={isMember}
+        walletAddress={walletAddress}
       />
     </div>
   );
@@ -107,16 +107,16 @@ const AccountDetails = ({
   balance,
   stakedBalance,
   chainName,
-  chainID,
   isMember,
+  walletAddress,
 }: {
   multisigAccount: MultisigAccount;
   actionsRequired: number;
   balance: string;
   stakedBalance: string;
   chainName: string;
-  chainID: string;
   isMember: boolean;
+  walletAddress: string;
 }) => {
   const { account: accountInfo, pubkeys } = multisigAccount;
   const { address, name, created_at, threshold } = accountInfo;
@@ -153,6 +153,7 @@ const AccountDetails = ({
           queryParams: {
             address: authToken?.address || '',
             signature: authToken?.signature || '',
+            account_address: walletAddress,
           },
         })
       );

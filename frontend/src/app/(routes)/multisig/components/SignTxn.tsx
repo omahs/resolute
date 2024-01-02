@@ -87,6 +87,7 @@ const SignTxn: React.FC<SignTxnProps> = (props) => {
           queryParams: {
             address: authToken?.address || '',
             signature: authToken?.signature || '',
+            account_address: walletAddress || '',
           },
         })
       );

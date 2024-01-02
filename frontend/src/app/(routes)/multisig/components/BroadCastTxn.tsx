@@ -32,8 +32,9 @@ const BroadCastTxn: React.FC<BroadCastTxnProps> = (props) => {
   const dispatch = useAppDispatch();
   const [load, setLoad] = useState(false);
   const { getChainInfo } = useGetChainInfo();
-  const { rpc } = getChainInfo(chainID);
-
+  const { rpc = '', address: walletAddress = '' } = chainID.length
+    ? getChainInfo(chainID)
+    : {};
   const updateTxnRes = useAppSelector(
     (state: RootState) => state.multisig.updateTxnRes
   );
@@ -61,6 +62,7 @@ const BroadCastTxn: React.FC<BroadCastTxnProps> = (props) => {
     const queryParams = {
       address: authToken?.address || '',
       signature: authToken?.signature || '',
+      account_address: walletAddress || '',
     };
     try {
       const client = await SigningStargateClient.connect(rpc);

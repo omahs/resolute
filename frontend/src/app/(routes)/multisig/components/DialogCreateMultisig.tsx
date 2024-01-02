@@ -332,6 +332,7 @@ const DialogCreateMultisig: React.FC<DialogCreateMultisigProps> = (props) => {
       const queryParams = {
         address: authToken?.address || '',
         signature: authToken?.signature || '',
+        account_address: address || '',
       };
       dispatch(
         createAccount({

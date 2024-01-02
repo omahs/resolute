@@ -230,7 +230,7 @@ const DialogCreateTxn: React.FC<DialogCreateTxnProps> = (props) => {
   };
 
   const { getDenomInfo, getChainInfo } = useGetChainInfo();
-  const { feeAmount, baseURL } = getChainInfo(chainID);
+  const { feeAmount, baseURL, address: walletAddress } = getChainInfo(chainID);
   const { decimals, displayDenom, minimalDenom } = getDenomInfo(chainID);
   const currency = {
     coinDenom: displayDenom,
@@ -424,6 +424,7 @@ const DialogCreateTxn: React.FC<DialogCreateTxnProps> = (props) => {
         queryParams: {
           address: authToken?.address || '',
           signature: authToken?.signature || '',
+          account_address: walletAddress,
         },
       })
     );

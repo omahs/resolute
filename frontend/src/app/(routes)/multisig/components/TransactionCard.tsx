@@ -144,6 +144,7 @@ const TransactionCard: React.FC<TransactionCardProps> = (props) => {
               txId={txn.id}
               address={multisigAddress || ''}
               isMember={isMember}
+              chainID={chainID}
             />
           </div>
         </div>

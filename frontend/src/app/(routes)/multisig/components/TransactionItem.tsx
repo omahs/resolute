@@ -146,6 +146,7 @@ const TransactionItem: React.FC<TransactionItemProps> = (props) => {
           txId={txn.id}
           address={multisigAddress}
           isMember={isMember}
+          chainID={chainID}
         />
       </div>
     </div>

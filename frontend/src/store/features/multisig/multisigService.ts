@@ -19,7 +19,9 @@ const GET_ACCOUNTS_URL = '/multisig/accounts';
 const SIGNATURE_PARAMS_STRING = (queryParams: QueryParams): string =>
   `?address=${encodeURIComponent(
     queryParams.address
-  )}&signature=${encodeURIComponent(queryParams.signature)}`;
+  )}&signature=${encodeURIComponent(queryParams.signature)}&account_address=${
+    queryParams.account_address
+  }`;
 
 const CREATE_ACCOUNT = (queryParams: QueryParams): string =>
   `/multisig` + SIGNATURE_PARAMS_STRING(queryParams);
@@ -78,7 +80,7 @@ const updateTx = (
 ): Promise<AxiosResponse> =>
   Axios.post(
     `${BASE_URL}/multisig/${address}/tx/${txId}` +
-    SIGNATURE_PARAMS_STRING(queryParams),
+      SIGNATURE_PARAMS_STRING(queryParams),
     payload
   );
 
@@ -105,7 +107,7 @@ export const deleteTx = (
 ): Promise<AxiosResponse> =>
   Axios.delete(
     `${BASE_URL}/multisig/${address}/tx/${txId}` +
-    SIGNATURE_PARAMS_STRING(queryParams)
+      SIGNATURE_PARAMS_STRING(queryParams)
   );
 
 export const deleteMultisig = (
@@ -113,8 +115,7 @@ export const deleteMultisig = (
   address: string
 ): Promise<AxiosResponse> =>
   Axios.delete(
-    `${BASE_URL}/multisig/${address}` +
-    SIGNATURE_PARAMS_STRING(queryParams)
+    `${BASE_URL}/multisig/${address}` + SIGNATURE_PARAMS_STRING(queryParams)
   );
 
 export default {

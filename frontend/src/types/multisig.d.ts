@@ -3,6 +3,7 @@ import { MultisigTxStatus, TxStatus } from './enums';
 interface QueryParams {
   address: string;
   signature: string;
+  account_address: string;
 }
 
 interface UpdateTxPayload {
