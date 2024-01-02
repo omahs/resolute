@@ -79,13 +79,13 @@ const SignTxn: React.FC<SignTxnProps> = (props) => {
         signature: toBase64(signatures[0]),
       };
 
-      const authToken = getAuthToken(chainID);
+      const authToken = getAuthToken();
       dispatch(
         signTx({
           data: payload,
           // below object's data in passed as query params to api request
           queryParams: {
-            address: walletAddress,
+            address: authToken?.address || '',
             signature: authToken?.signature || '',
           },
         })

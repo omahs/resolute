@@ -9,23 +9,20 @@ import DialogDeleteTxn from './DialogDeleteTxn';
 interface DeleteTxnProps {
   txId: number;
   address: string;
-  chainID: string;
   isMember: boolean;
 }
 
 const DeleteTxn: React.FC<DeleteTxnProps> = (props) => {
-  const { txId, address, chainID, isMember } = props;
+  const { txId, address, isMember } = props;
   const dispatch = useAppDispatch();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
-  const { getChainInfo } = useGetChainInfo();
-  const { address: walletAddress } = getChainInfo(chainID);
-  const authToken = getAuthToken(chainID);
+  const authToken = getAuthToken();
 
   const deleteTx = () => {
     dispatch(
       deleteTxn({
         queryParams: {
-          address: walletAddress,
+          address: authToken?.address || '',
           signature: authToken?.signature || '',
         },
         data: {

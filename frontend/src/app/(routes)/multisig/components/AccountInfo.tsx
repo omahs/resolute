@@ -143,15 +143,9 @@ const AccountDetails = ({
     }
   }, [deleteMultisigRes?.status]);
 
-  const authToken = getAuthToken(chainID);
+  const authToken = getAuthToken();
 
   const handleDelete = () => {
-    dispatch(
-      deleteMultisig({
-        data: { address: multisigAccount?.account?.address },
-        queryParams: { address: '', signature: '' },
-      })
-    );
     if (isMember) {
       dispatch(
         deleteMultisig({

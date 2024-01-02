@@ -23,16 +23,18 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
   const verifyAccountRes = useAppSelector(
     (state) => state.multisig.verifyAccountRes
   );
+  const multisigAccounts = useAppSelector(
+    (state: RootState) => state.multisig.multisigAccounts
+  );
   const chainID = nameToChainIDs[chainName];
 
   const { getChainInfo } = useGetChainInfo();
-  const { address } = getChainInfo(chainID);
+  const { address, cosmosAddress } = getChainInfo(chainID);
 
   useEffect(() => {
     if (verifyAccountRes.status === 'idle') {
       setAuthToken({
-        chainID: chainID,
-        address: address,
+        address: cosmosAddress,
         signature: verifyAccountRes.token,
       });
       setVerified(true);
@@ -48,7 +50,7 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
   }, [verifyAccountRes]);
 
   useEffect(() => {
-    if (isVerified({ chainID, address })) {
+    if (isVerified({ address: cosmosAddress })) {
       setVerified(true);
     } else {
       setVerified(false);
@@ -81,7 +83,7 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
           />
         </>
       ) : (
-        <VerifyAccount chainID={chainID} walletAddress={address} />
+        <VerifyAccount chainID={chainID} />
       )}
     </div>
   );

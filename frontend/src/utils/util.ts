@@ -336,16 +336,10 @@ export const filterAsset = (
   return includedAsset;
 };
 
-export const isVerified = ({
-  chainID,
-  address,
-}: {
-  chainID: string;
-  address: string;
-}) => {
-  const token = getAuthToken(chainID);
+export const isVerified = ({ address }: { address: string }) => {
+  const token = getAuthToken();
   if (token) {
-    if (token.address === address && token.chainID === chainID) {
+    if (token.address === address) {
       return true;
     }
   }

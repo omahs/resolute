@@ -142,7 +142,11 @@ const TransactionItem: React.FC<TransactionItemProps> = (props) => {
             </div>
           </div>
         </Tooltip>
-        <DeleteTxn txId={txn.id} address={multisigAddress} chainID={chainID} isMember={isMember} />
+        <DeleteTxn
+          txId={txn.id}
+          address={multisigAddress}
+          isMember={isMember}
+        />
       </div>
     </div>
   );

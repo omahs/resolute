@@ -8,7 +8,6 @@ interface LocalNetworks {
 }
 
 interface AuthToken {
-  chainID: string;
   address: string;
   signature: string;
 }
@@ -106,40 +105,28 @@ export function updateIBCStatus(address: string, txHash: string) {
 }
 
 export function setAuthToken(authToken: AuthToken) {
-  const tokens = localStorage.getItem(AUTH_TOKEN_KEY_NAME);
-  let authTokens = [];
+  let auth_token = {};
 
-  if (tokens) {
-    authTokens = JSON.parse(tokens);
-  }
-
-  const token = authTokens.filter((item: AuthToken) => {
-    return item.chainID === authToken.chainID;
-  });
-
-  if (token.length) {
-    return;
-  }
-  if (authToken.chainID && authToken.address && authToken.signature) {
-    authTokens.push({
-      chainID: authToken.chainID,
+  if (authToken.address && authToken.signature) {
+    auth_token = {
       address: authToken.address,
       signature: authToken.signature,
-    });
-    localStorage.setItem(AUTH_TOKEN_KEY_NAME, JSON.stringify(authTokens));
+    };
+    localStorage.setItem(AUTH_TOKEN_KEY_NAME, JSON.stringify(auth_token));
   }
 }
 
-export function getAuthToken(chainID: string): AuthToken | null {
-  const tokens = localStorage.getItem(AUTH_TOKEN_KEY_NAME);
+export function getAuthToken(): AuthToken | null {
+  const token = localStorage.getItem(AUTH_TOKEN_KEY_NAME);
 
-  if (tokens) {
-    const authTokens = JSON.parse(tokens);
-
-    const token = authTokens.filter((item: AuthToken) => {
-      return item.chainID === chainID;
-    });
-    return token[0];
+  if (token) {
+    try {
+      const authToken = JSON.parse(token);
+      return authToken;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   return null;

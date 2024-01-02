@@ -32,7 +32,7 @@ const BroadCastTxn: React.FC<BroadCastTxnProps> = (props) => {
   const dispatch = useAppDispatch();
   const [load, setLoad] = useState(false);
   const { getChainInfo } = useGetChainInfo();
-  const { rpc, address: walletAddress } = getChainInfo(chainID);
+  const { rpc } = getChainInfo(chainID);
 
   const updateTxnRes = useAppSelector(
     (state: RootState) => state.multisig.updateTxnRes
@@ -57,9 +57,9 @@ const BroadCastTxn: React.FC<BroadCastTxnProps> = (props) => {
 
   const broadcastTxn = async () => {
     setLoad(true);
-    const authToken = getAuthToken(chainID);
+    const authToken = getAuthToken();
     const queryParams = {
-      address: walletAddress,
+      address: authToken?.address || '',
       signature: authToken?.signature || '',
     };
     try {
