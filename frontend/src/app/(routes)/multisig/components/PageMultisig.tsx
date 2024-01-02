@@ -23,9 +23,6 @@ const PageMultisig = ({ chainName }: { chainName: string }) => {
   const verifyAccountRes = useAppSelector(
     (state) => state.multisig.verifyAccountRes
   );
-  const multisigAccounts = useAppSelector(
-    (state: RootState) => state.multisig.multisigAccounts
-  );
   const chainID = nameToChainIDs[chainName];
 
   const { getChainInfo } = useGetChainInfo();
