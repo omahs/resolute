@@ -69,15 +69,13 @@ const OverviewPage = ({ chainIDs }: { chainIDs: string[] }) => {
   }, []);
 
   useEffect(() => {
-    if (chainIDs) {
-      dispatch(
-        getRecentTransactions({
-          addresses: getAllChainAddresses(chainIDs),
-          module: 'all',
-        })
-      );
-    }
-  }, [chainIDs]);
+    dispatch(
+      getRecentTransactions({
+        addresses: getAllChainAddresses(chainIDs),
+        module: 'all',
+      })
+    );
+  }, []);
 
   return (
     <div className="w-full flex justify-between">

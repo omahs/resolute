@@ -18,8 +18,8 @@ import { WITVAL } from '@/utils/constants';
 import { VITWIT, WITVAL_DESCRIPTION } from '@/constants/witval';
 
 const ValidatorProfile = ({ moniker }: { moniker: string }) => {
-  const tabs = ['Profile', 'Announcements', 'Inbox', 'Notices'];
-  const selectedTab = 'profile';
+  const tabs = ['Overview', 'Announcements', 'Inbox', 'Notices'];
+  const selectedTab = 'overview';
   useInitAllValidator();
   const { getChainwiseValidatorInfo, getValidatorStats } =
     useGetValidatorInfo();
@@ -59,7 +59,7 @@ const ValidatorProfile = ({ moniker }: { moniker: string }) => {
                     : 'validator-profile-menu-item font-normal'
                 }
               >
-                {tab === 'Profile' ? (
+                {tab === 'Overview' ? (
                   <span>{tab}</span>
                 ) : (
                   <Tooltip title={'Coming Soon...'} placement="bottom">
