@@ -7,10 +7,15 @@ import React from 'react';
 import ValidatorsTable from './components/ValidatorsTable';
 import useInitAllValidator from '@/custom-hooks/useInitAllValidator';
 import useGetValidatorInfo from '@/custom-hooks/useGetValidatorInfo';
-import { capitalizeFirstLetter, formatValidatorStatsValue } from '@/utils/util';
+import {
+  capitalizeFirstLetter,
+  formatValidatorStatsValue,
+  isWitval,
+} from '@/utils/util';
 import ValidatorLogo from '../../components/ValidatorLogo';
 import { Tooltip } from '@mui/material';
 import { WITVAL } from '@/utils/constants';
+import { VITWIT, WITVAL_DESCRIPTION } from '@/constants/witval';
 
 const ValidatorProfile = ({ moniker }: { moniker: string }) => {
   const tabs = ['Profile', 'Announcements', 'Inbox', 'Notices'];
@@ -72,7 +77,9 @@ const ValidatorProfile = ({ moniker }: { moniker: string }) => {
       <div className="flex-1 space-y-10 overflow-y-scroll">
         <div className="grid grid-cols-2 gap-10">
           <ValidatorMetadataCard
-            description={validatorDescription}
+            description={
+              isWitval(moniker) ? WITVAL_DESCRIPTION : validatorDescription
+            }
             identity={validatorIdentity}
             moniker={moniker}
             website={validatorWebsite}
@@ -112,7 +119,7 @@ const ValidatorMetadataCard = ({
       <div className="flex gap-2 items-center h-8">
         <ValidatorLogo identity={identity} height={24} width={24} />
         <div className="text-[18px] leading-[21.7px]">
-          {capitalizeFirstLetter(moniker)}
+          {capitalizeFirstLetter(isWitval(moniker) ? VITWIT : moniker)}
         </div>
       </div>
       <div className="space-y-10">

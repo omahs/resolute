@@ -9,6 +9,7 @@ import { Options } from '@/custom-hooks/useSortedAssets';
 import { getAuthToken, removeAllAuthTokens } from './localStorage';
 import { MultisigAddressPubkey } from '@/types/multisig';
 import { fromBech32 } from '@cosmjs/encoding';
+import { WITVAL } from './constants';
 
 export const convertPaginationToParams = (
   pagination?: KeyLimitPagination
@@ -462,4 +463,9 @@ export function formatValidatorStatsValue(
   return isNaN(numValue)
     ? '-'
     : Number(numValue.toFixed(precision)).toLocaleString();
+}
+
+export function isWitval(moniker: string): boolean {
+  if (moniker.toLowerCase() === WITVAL.toLowerCase()) return true;
+  return false;
 }
